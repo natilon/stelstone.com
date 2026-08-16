@@ -1,6 +1,8 @@
 {
   "name": "stelstone-com",
   "main": "index.mjs",
+  // Pinned to the stelstone account — deploys cannot land in the wrong one.
+  "account_id": "733757d2ea1ee4dc167517b649df1c74",
   "compatibility_date": "2025-05-01",
   "compatibility_flags": ["nodejs_compat"],
 
