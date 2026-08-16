@@ -1,0 +1,26 @@
+{
+  "name": "stelstone-com",
+  "main": "index.mjs",
+  "compatibility_date": "2025-05-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // One assets directory carries both the site (dist/) and the admin SPA
+  // (dist/admin/, composed by scripts/postbuild.mjs). Misses fall through to
+  // the worker: redirects, /api, the admin SPA fallback, the 404 page.
+  "assets": {
+    "directory": "../dist",
+    "binding": "ASSETS"
+  },
+
+  // OPTIONAL — page templates in the admin. Fine without it.
+  // "kv_namespaces": [
+  //   { "binding": "TEMPLATES_KV", "id": "<your-kv-namespace-id>" }
+  // ],
+
+  "triggers": { "crons": ["* * * * *"] },
+  "observability": { "enabled": true }
+
+  // Secrets — npx wrangler secret put <NAME> -c worker/wrangler.jsonc
+  //   GITHUB_TOKEN   fine-grained PAT, Contents read/write on this repo
+  //   ADMIN_PASS     admin panel password
+}
