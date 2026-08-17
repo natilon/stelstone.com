@@ -1,0 +1,22 @@
+{
+  "entries": [
+    {
+      "id": "en/landing",
+      "slug": "landing",
+      "lang": "en",
+      "collection": "landing",
+      "title": "Landing (EN)",
+      "file": "en-landing.json",
+      "meta": {}
+    },
+    {
+      "id": "tr/landing",
+      "slug": "landing",
+      "lang": "tr",
+      "collection": "landing",
+      "title": "Landing (TR)",
+      "file": "tr-landing.json",
+      "meta": {}
+    }
+  ]
+}
