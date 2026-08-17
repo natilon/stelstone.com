@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "id": "en/notes",
+      "slug": "notes",
+      "lang": "en",
+      "collection": "pages",
+      "title": "Notes",
+      "file": "en-notes.json",
+      "meta": {}
+    }
+  ]
+}
