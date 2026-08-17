@@ -12,7 +12,7 @@
       "id": "b-hero",
       "type": "landing-hero",
       "properties": {
-        "status": "Astro integration · MIT · git-based CMS",
+        "status": "Git-based CMS with Astro integration ",
         "title": "The CMS your editors can't break.",
         "lede": "Every record is a file in your repo, every publish is a git commit, the output is static — and the support phone stays quiet.",
         "ctaDeploy": "Deploy to Cloudflare",
