@@ -80,7 +80,7 @@
       "type": "landing-commit",
       "properties": {
         "title": "Her yayın bir commit.",
-        "body1": "Kayıt, kendi repo'nuzdaki bir JSON dosyasıdır. Admin yazar, git saklar, Astro statik HTML'e derler. Geri almak bir menü maddesidir, çünkü geçmiş git geçmişidir.",
+        "body1": "Kayıt, kendi repo'nuzdaki bir JSON dosyasıdır. Admin yazar, git saklar, Astro statik HTML'e derler. Geçmiş git reposunda saklanır ve değişiklikler tek tıkla geri alınabilir.",
         "body2": "Decap ve Keystatic gibi git tabanlı — fark: Stelstone sitenin route'larını bilir.",
         "testsLabel": "otomatik test"
       }
