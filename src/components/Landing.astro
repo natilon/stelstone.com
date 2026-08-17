@@ -1,13 +1,25 @@
 ---
 /**
- * The landing, parameterized by its copy record (`landing` collection).
- * Structure and design live HERE — an editor edits words in /admin and
- * cannot touch layout; that split is the site living its own pitch.
- * One render = one language: real routes (/ and /tr/) replaced the
- * client-side toggle, so search engines see one language per URL.
+ * The landing shell: head, header, footer, the design system CSS — and in
+ * between, the copy record's BLOCKS rendered through the same BlockRenderer
+ * every Stelstone site uses, mapped to this site's section components.
+ * An editor rephrases or reorders sections in /admin; the design lives in
+ * src/components/landing/*. A deleted section is one git-restore away —
+ * every publish is a commit, which is the whole pitch.
  */
+import BlockRenderer from "@stelstone/astro-blocks";
+import Hero from "./landing/Hero.astro";
+import Calls from "./landing/Calls.astro";
+import Rails from "./landing/Rails.astro";
+import CommitSplit from "./landing/CommitSplit.astro";
+import Setup from "./landing/Setup.astro";
+import Production from "./landing/Production.astro";
+import Migrate from "./landing/Migrate.astro";
+import Ways from "./landing/Ways.astro";
+
 interface Props {
-  copy: Record<string, any>;
+  blocks: any[];
+  footerStory?: string;
   lang: "en" | "tr";
   title: string;
   description: string;
@@ -15,21 +27,23 @@ interface Props {
   altHref: string;
   altLabel: string;
 }
-const { copy, lang, title, description, canonical, altHref, altLabel } = Astro.props;
+const { blocks = [], footerStory = "", lang, title, description, canonical, altHref, altLabel } = Astro.props;
 
-// object-list values may arrive as arrays (our records) or JSON strings
-// (older admin saves) — tolerate both, like the admin itself does.
-const asList = (v: unknown): any[] => {
-  if (Array.isArray(v)) return v;
-  if (typeof v === "string") {
-    try { const p = JSON.parse(v); return Array.isArray(p) ? p : []; } catch { return []; }
-  }
-  return [];
+// The header repeats the hero's deploy CTA; fall back gracefully if the
+// hero block was removed.
+const heroProps = blocks.find((b) => b?.type === "landing-hero")?.properties ?? {};
+const headerCta = heroProps.ctaDeploy || (lang === "tr" ? "Cloudflare'e kur" : "Deploy to Cloudflare");
+
+const components = {
+  "landing-hero": Hero,
+  "landing-calls": Calls,
+  "landing-rails": Rails,
+  "landing-commit": CommitSplit,
+  "landing-setup": Setup,
+  "landing-production": Production,
+  "landing-migrate": Migrate,
+  "landing-ways": Ways,
 };
-const calls = asList(copy.calls);
-const rails = asList(copy.rails);
-const ways = asList(copy.ways);
-const copyLabels = lang === "tr" ? { idle: "kopyala", done: "kopyalandı" } : { idle: "copy", done: "copied" };
 ---
 
 <!doctype html>
@@ -81,214 +95,18 @@ const copyLabels = lang === "tr" ? { idle: "kopyala", done: "kopyalandı" } : { 
           <a class="lang-btn mono" href={altHref}>{altLabel}</a>
           <a class="nav-link" href="https://github.com/natilon/stelstone">GitHub</a>
           <a class="btn amber" href="https://deploy.workers.cloudflare.com/?url=https://github.com/natilon/stelstone-starter"
-            >{copy.ctaDeploy}</a
+            >{headerCta}</a
           >
         </div>
       </header>
 
-      <section id="top" class="shell hero">
-        <div class="status mono"><span class="dot"></span>{copy.status}</div>
-        <h1>{copy.heroTitle}</h1>
-        <p class="lede">{copy.heroLede}</p>
-        <div class="cta-row">
-          <a class="btn amber big" href="https://deploy.workers.cloudflare.com/?url=https://github.com/natilon/stelstone-starter"
-            >{copy.ctaDeploy}</a
-          >
-          <a class="btn ghost big" href="https://github.com/natilon/stelstone">{copy.ctaSource}</a>
-        </div>
-        <div class="install mono">
-          <span class="prompt">$</span>
-          <code id="install-cmd">npm install stelstone</code>
-          <button class="copy-btn mono" id="copy-install" data-idle={copyLabels.idle} data-done={copyLabels.done}
-            >{copyLabels.idle}</button
-          >
-        </div>
-      </section>
-
-      <section class="band">
-        <div class="shell pad">
-          <h2>{copy.callsTitle}</h2>
-          <p class="sub">{copy.callsSub}</p>
-          <div class="cell-grid calls">
-            {calls.map((c) => (
-              <div class="cell">
-                <p class="quote mono">{c.quote}</p>
-                <p class="body">{c.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div class="shell pad">
-          <h2>{copy.railsTitle}</h2>
-          <p class="sub">{copy.railsSub}</p>
-          <div class="rails">
-            {rails.map((r) => (
-              <div class="rail-item">
-                <h3 class="mono">{r.title}</h3>
-                <p class="body">{r.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section class="band">
-        <div class="shell pad split">
-          <div>
-            <h2>{copy.commitTitle}</h2>
-            <p class="lede-sm">{copy.commitBody1}</p>
-            <p class="lede-sm">{copy.commitBody2}</p>
-            <div class="proof-row">
-              <div class="stat mono">
-                <div class="num">340+</div>
-                <div class="label">{copy.testsLabel}</div>
-              </div>
-              <img
-                src="https://img.shields.io/github/actions/workflow/status/natilon/stelstone/ci.yml?style=flat-square&label=CI&color=2a2724&labelColor=2a2724"
-                alt="CI status"
-                height="20"
-              />
-              <a class="nav-link" href="https://github.com/natilon/stelstone">GitHub →</a>
-            </div>
-          </div>
-          <div class="code-card">
-            <div class="code-head mono">src/pages-data/pages/en-about.json</div>
-            <pre class="mono" is:raw>{
-  "slug": "about",
-  "meta": { "title": "About us", "draft": false },
-  "blocks": [
-    { "type": "text", "properties": { "content": "&lt;p&gt;We're a small studio…&lt;/p&gt;" } }
-  ]
-}</pre>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div class="shell pad">
-          <h2>{copy.setupTitle}</h2>
-          <p class="sub">{copy.setupSub}</p>
-          <div class="setup-grid">
-            <div class="code-card">
-              <div class="code-head mono">astro.config.mjs</div>
-              <pre class="mono diff" is:raw><span class="d-ctx">import { defineConfig } from "astro/config";</span>
-<span class="d-add">+ import stelstone from "stelstone";</span>
-<span class="d-add">+ import config from "./cms.config.mjs";</span>
-
-<span class="d-ctx">export default defineConfig({</span>
-<span class="d-add">+   integrations: [stelstone({ config })],</span>
-<span class="d-ctx">});</span></pre>
-            </div>
-            <div class="setup-col">
-              <div class="code-card">
-                <div class="code-head mono">npm run dev</div>
-                <pre class="mono">Stelstone mounted at /admin (admin UI: built bundle)</pre>
-              </div>
-              <div class="loop-card">
-                <p class="body">{copy.loopBody}</p>
-                <a class="btn amber" href="https://deploy.workers.cloudflare.com/?url=https://github.com/natilon/stelstone-starter"
-                  >{copy.ctaDeploy}</a
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="band">
-        <div class="shell pad">
-          <h2 class="mb-lg">{copy.prodTitle}</h2>
-          <div class="cell-grid four">
-            <div class="cell">
-              <div class="kicker mono">{lang === "tr" ? "Canlı site" : "Live site"}</div>
-              <a class="big-link" href="https://dymdanismanlik.com">dymdanismanlik.com ↗</a>
-              <p class="cell-note">
-                {lang === "tr"
-                  ? "WordPress'ten kelime kelime doğrulanmış migrasyonla taşındı."
-                  : "Migrated from WordPress with word-by-word verification."}
-              </p>
-            </div>
-            <div class="cell">
-              <div class="kicker mono">{lang === "tr" ? "Lisans" : "Licence"}</div>
-              <div class="big-link plain">MIT</div>
-              <p class="cell-note">
-                {lang === "tr" ? "Ticari kullanım serbest. Kilitlenme yok." : "Commercial use is free. No lock-in."}
-              </p>
-            </div>
-            <div class="cell">
-              <div class="kicker mono">{lang === "tr" ? "Bakım" : "Maintenance"}</div>
-              <a class="big-link" href="https://github.com/natilon/stelstone/blob/main/CHANGELOG.md">CHANGELOG ↗</a>
-              <p class="cell-note">
-                {lang === "tr" ? "Yayınlanan sürümler, yazılı." : "Released versions, written down."}
-              </p>
-            </div>
-            <div class="cell">
-              <div class="kicker mono">{lang === "tr" ? "Çerçeve" : "Framework"}</div>
-              <a class="big-link" href="https://github.com/natilon/stelstone#quick-start">
-                {lang === "tr" ? "Astro entegrasyonu ↗" : "Astro integration ↗"}
-              </a>
-              <p class="cell-note">
-                {lang === "tr"
-                  ? "Bugün yalnız Astro — tek çerçeve, düzgün yapılmış."
-                  : "Astro today — one framework, done properly."}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div class="shell pad migrate">
-          <div>
-            <h2 class="h2-sm">{copy.migrateTitle}</h2>
-            <p class="lede-sm last">{copy.migrateBody}</p>
-          </div>
-          <div class="cta-row">
-            <a class="btn amber big" href="mailto:hello@stelstone.com?subject=Migrate%20from%20WordPress">{copy.migrateCta}</a>
-            <a class="btn ghost big" href="https://github.com/natilon/stelstone">{copy.migrateCta2}</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="band">
-        <div class="shell pad">
-          <h2 class="mb-lg">{copy.waysTitle}</h2>
-          <div class="ways">
-            {ways[0] && (
-              <div class="way">
-                <h3>{ways[0].title}</h3>
-                <p class="body grow">{ways[0].body}</p>
-                <a class="way-link" href="https://github.com/natilon/stelstone">{ways[0].linkLabel}</a>
-              </div>
-            )}
-            {ways[1] && (
-              <div class="way">
-                <h3>{ways[1].title}</h3>
-                <p class="body grow">{ways[1].body}</p>
-                <a class="way-link" href="mailto:hello@stelstone.com?subject=Migrate%20from%20WordPress">{ways[1].linkLabel}</a>
-              </div>
-            )}
-            {ways[2] && (
-              <div class="way dashed">
-                <div class="way-head">
-                  <h3 class="muted">{ways[2].title}</h3>
-                  <span class="soon mono">{ways[2].linkLabel}</span>
-                </div>
-                <p class="body grow muted-body">{ways[2].body}</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
+      <BlockRenderer blocks={blocks} components={components} />
 
       <footer>
         <div class="shell foot">
           <div>
             <div class="wordmark foot-mark">stelstone</div>
-            <p class="foot-story">{copy.footerStory}</p>
+            <p class="foot-story">{footerStory}</p>
           </div>
           <div class="foot-links">
             <a href="/notes/">Notes</a>
@@ -306,14 +124,20 @@ const copyLabels = lang === "tr" ? { idle: "kopyala", done: "kopyalandı" } : { 
     </div>
 
     <script is:inline>
+      const isTR = document.documentElement.lang === "tr";
       const copyBtn = document.getElementById("copy-install");
-      let copyTimer;
-      copyBtn.addEventListener("click", () => {
-        try { navigator.clipboard.writeText(document.getElementById("install-cmd").textContent); } catch {}
-        copyBtn.textContent = copyBtn.dataset.done;
-        clearTimeout(copyTimer);
-        copyTimer = setTimeout(() => { copyBtn.textContent = copyBtn.dataset.idle; }, 1600);
-      });
+      if (copyBtn) {
+        const idle = isTR ? "kopyala" : "copy";
+        const done = isTR ? "kopyalandı" : "copied";
+        copyBtn.textContent = idle;
+        let copyTimer;
+        copyBtn.addEventListener("click", () => {
+          try { navigator.clipboard.writeText(document.getElementById("install-cmd").textContent); } catch {}
+          copyBtn.textContent = done;
+          clearTimeout(copyTimer);
+          copyTimer = setTimeout(() => { copyBtn.textContent = idle; }, 1600);
+        });
+      }
     </script>
   </body>
 </html>
@@ -339,6 +163,8 @@ const copyLabels = lang === "tr" ? { idle: "kopyala", done: "kopyalandı" } : { 
   .band { border-top: 1px solid #2a2724; background: #191716; }
   section:not(.band) { border-top: 1px solid #2a2724; }
   section#top { border-top: 0; }
+  /* BlockRenderer'ın boşluk sarmalayıcısı section akışını etkilemesin */
+  .block-spacing { display: contents; }
 
   .top {
     position: sticky; top: 0; z-index: 20;

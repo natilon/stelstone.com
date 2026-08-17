@@ -1,0 +1,33 @@
+---
+interface Props { properties: Record<string, any> }
+const { properties: p = {} } = Astro.props;
+---
+
+<section>
+  <div class="shell pad">
+    <h2>{p.title}</h2>
+    <p class="sub">{p.sub}</p>
+    <div class="setup-grid">
+      <div class="code-card">
+        <div class="code-head mono">astro.config.mjs</div>
+        <pre class="mono diff" is:raw><span class="d-ctx">import { defineConfig } from "astro/config";</span>
+<span class="d-add">+ import stelstone from "stelstone";</span>
+<span class="d-add">+ import config from "./cms.config.mjs";</span>
+
+<span class="d-ctx">export default defineConfig({</span>
+<span class="d-add">+   integrations: [stelstone({ config })],</span>
+<span class="d-ctx">});</span></pre>
+      </div>
+      <div class="setup-col">
+        <div class="code-card">
+          <div class="code-head mono">npm run dev</div>
+          <pre class="mono">Stelstone mounted at /admin (admin UI: built bundle)</pre>
+        </div>
+        <div class="loop-card">
+          <p class="body">{p.loopBody}</p>
+          <a class="btn amber" href="https://deploy.workers.cloudflare.com/?url=https://github.com/natilon/stelstone-starter">Deploy to Cloudflare</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

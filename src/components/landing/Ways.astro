@@ -1,0 +1,37 @@
+---
+import { asList } from "../../lib/aslist";
+interface Props { properties: Record<string, any> }
+const { properties: p = {} } = Astro.props;
+const ways = asList(p.ways);
+---
+
+<section class="band">
+  <div class="shell pad">
+    <h2 class="mb-lg">{p.title}</h2>
+    <div class="ways">
+      {ways[0] && (
+        <div class="way">
+          <h3>{ways[0].title}</h3>
+          <p class="body grow">{ways[0].body}</p>
+          <a class="way-link" href="https://github.com/natilon/stelstone">{ways[0].linkLabel}</a>
+        </div>
+      )}
+      {ways[1] && (
+        <div class="way">
+          <h3>{ways[1].title}</h3>
+          <p class="body grow">{ways[1].body}</p>
+          <a class="way-link" href="mailto:hello@stelstone.com?subject=Migrate%20from%20WordPress">{ways[1].linkLabel}</a>
+        </div>
+      )}
+      {ways[2] && (
+        <div class="way dashed">
+          <div class="way-head">
+            <h3 class="muted">{ways[2].title}</h3>
+            <span class="soon mono">{ways[2].linkLabel}</span>
+          </div>
+          <p class="body grow muted-body">{ways[2].body}</p>
+        </div>
+      )}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,17 @@
+---
+interface Props { properties: Record<string, any> }
+const { properties: p = {} } = Astro.props;
+---
+
+<section>
+  <div class="shell pad migrate">
+    <div>
+      <h2 class="h2-sm">{p.title}</h2>
+      <p class="lede-sm last">{p.body}</p>
+    </div>
+    <div class="cta-row">
+      <a class="btn amber big" href="mailto:hello@stelstone.com?subject=Migrate%20from%20WordPress">{p.cta}</a>
+      <a class="btn ghost big" href="https://github.com/natilon/stelstone">{p.cta2}</a>
+    </div>
+  </div>
+</section>

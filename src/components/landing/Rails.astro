@@ -1,0 +1,21 @@
+---
+import { asList } from "../../lib/aslist";
+interface Props { properties: Record<string, any> }
+const { properties: p = {} } = Astro.props;
+const rails = asList(p.rails);
+---
+
+<section>
+  <div class="shell pad">
+    <h2>{p.title}</h2>
+    <p class="sub">{p.sub}</p>
+    <div class="rails">
+      {rails.map((r) => (
+        <div class="rail-item">
+          <h3 class="mono">{r.title}</h3>
+          <p class="body">{r.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

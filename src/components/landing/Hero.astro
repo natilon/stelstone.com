@@ -1,0 +1,19 @@
+---
+interface Props { properties: Record<string, any> }
+const { properties: p = {} } = Astro.props;
+---
+
+<section id="top" class="shell hero">
+  <div class="status mono"><span class="dot"></span>{p.status}</div>
+  <h1>{p.title}</h1>
+  <p class="lede">{p.lede}</p>
+  <div class="cta-row">
+    <a class="btn amber big" href="https://deploy.workers.cloudflare.com/?url=https://github.com/natilon/stelstone-starter">{p.ctaDeploy}</a>
+    <a class="btn ghost big" href="https://github.com/natilon/stelstone">{p.ctaSource}</a>
+  </div>
+  <div class="install mono">
+    <span class="prompt">$</span>
+    <code id="install-cmd">npm install stelstone</code>
+    <button class="copy-btn mono" id="copy-install">copy</button>
+  </div>
+</section>
