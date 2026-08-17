@@ -1,0 +1,23 @@
+---
+/**
+ * /tr/ — the Turkish landing. Same structure, the tr copy record.
+ * A real route instead of a client-side toggle: one language per URL,
+ * hreflang tells search engines the pair.
+ */
+import { getCollection } from "astro:content";
+import Landing from "../../components/Landing.astro";
+
+const records = await getCollection("landing");
+const copy = records.find((r) => r.data.lang === "tr")?.data;
+if (!copy) throw new Error("landing collection has no tr record (tr-landing.json)");
+---
+
+<Landing
+  copy={copy}
+  lang="tr"
+  title="Stelstone — editörün siteyi bozamadığı CMS"
+  description="Her kayıt repo'nuzda bir dosya, her yayın bir commit, çıktı statik."
+  canonical="https://stelstone.com/tr/"
+  altHref="/"
+  altLabel="EN"
+/>

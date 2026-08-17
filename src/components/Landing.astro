@@ -1,0 +1,471 @@
+---
+/**
+ * The landing, parameterized by its copy record (`landing` collection).
+ * Structure and design live HERE — an editor edits words in /admin and
+ * cannot touch layout; that split is the site living its own pitch.
+ * One render = one language: real routes (/ and /tr/) replaced the
+ * client-side toggle, so search engines see one language per URL.
+ */
+interface Props {
+  copy: Record<string, any>;
+  lang: "en" | "tr";
+  title: string;
+  description: string;
+  canonical: string;
+  altHref: string;
+  altLabel: string;
+}
+const { copy, lang, title, description, canonical, altHref, altLabel } = Astro.props;
+
+// object-list values may arrive as arrays (our records) or JSON strings
+// (older admin saves) — tolerate both, like the admin itself does.
+const asList = (v: unknown): any[] => {
+  if (Array.isArray(v)) return v;
+  if (typeof v === "string") {
+    try { const p = JSON.parse(v); return Array.isArray(p) ? p : []; } catch { return []; }
+  }
+  return [];
+};
+const calls = asList(copy.calls);
+const rails = asList(copy.rails);
+const ways = asList(copy.ways);
+const copyLabels = lang === "tr" ? { idle: "kopyala", done: "kopyalandı" } : { idle: "copy", done: "copied" };
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href="https://stelstone.com/" />
+    <link rel="alternate" hreflang="tr" href="https://stelstone.com/tr/" />
+    <link rel="alternate" hreflang="x-default" href="https://stelstone.com/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="clip">
+      <header class="top">
+        <div class="shell bar">
+          <a href={lang === "tr" ? "/tr/" : "/"} class="wordmark">stelstone</a>
+          <div class="badges">
+            <a href="https://github.com/natilon/stelstone"
+              ><img
+                src="https://img.shields.io/github/stars/natilon/stelstone?style=flat-square&label=stars&color=2a2724&labelColor=2a2724"
+                alt="GitHub stars"
+                height="20"
+              /></a
+            >
+            <a href="https://www.npmjs.com/package/stelstone"
+              ><img
+                src="https://img.shields.io/npm/v/stelstone?style=flat-square&label=npm&color=2a2724&labelColor=2a2724"
+                alt="npm version"
+                height="20"
+              /></a
+            >
+          </div>
+          <div class="grow"></div>
+          <a class="lang-btn mono" href={altHref}>{altLabel}</a>
+          <a class="nav-link" href="https://github.com/natilon/stelstone">GitHub</a>
+          <a class="btn amber" href="https://deploy.workers.cloudflare.com/?url=https://github.com/natilon/stelstone-starter"
+            >{copy.ctaDeploy}</a
+          >
+        </div>
+      </header>
+
+      <section id="top" class="shell hero">
+        <div class="status mono"><span class="dot"></span>{copy.status}</div>
+        <h1>{copy.heroTitle}</h1>
+        <p class="lede">{copy.heroLede}</p>
+        <div class="cta-row">
+          <a class="btn amber big" href="https://deploy.workers.cloudflare.com/?url=https://github.com/natilon/stelstone-starter"
+            >{copy.ctaDeploy}</a
+          >
+          <a class="btn ghost big" href="https://github.com/natilon/stelstone">{copy.ctaSource}</a>
+        </div>
+        <div class="install mono">
+          <span class="prompt">$</span>
+          <code id="install-cmd">npm install stelstone</code>
+          <button class="copy-btn mono" id="copy-install" data-idle={copyLabels.idle} data-done={copyLabels.done}
+            >{copyLabels.idle}</button
+          >
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="shell pad">
+          <h2>{copy.callsTitle}</h2>
+          <p class="sub">{copy.callsSub}</p>
+          <div class="cell-grid calls">
+            {calls.map((c) => (
+              <div class="cell">
+                <p class="quote mono">{c.quote}</p>
+                <p class="body">{c.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="shell pad">
+          <h2>{copy.railsTitle}</h2>
+          <p class="sub">{copy.railsSub}</p>
+          <div class="rails">
+            {rails.map((r) => (
+              <div class="rail-item">
+                <h3 class="mono">{r.title}</h3>
+                <p class="body">{r.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="shell pad split">
+          <div>
+            <h2>{copy.commitTitle}</h2>
+            <p class="lede-sm">{copy.commitBody1}</p>
+            <p class="lede-sm">{copy.commitBody2}</p>
+            <div class="proof-row">
+              <div class="stat mono">
+                <div class="num">340+</div>
+                <div class="label">{copy.testsLabel}</div>
+              </div>
+              <img
+                src="https://img.shields.io/github/actions/workflow/status/natilon/stelstone/ci.yml?style=flat-square&label=CI&color=2a2724&labelColor=2a2724"
+                alt="CI status"
+                height="20"
+              />
+              <a class="nav-link" href="https://github.com/natilon/stelstone">GitHub →</a>
+            </div>
+          </div>
+          <div class="code-card">
+            <div class="code-head mono">src/pages-data/pages/en-about.json</div>
+            <pre class="mono" is:raw>{
+  "slug": "about",
+  "meta": { "title": "About us", "draft": false },
+  "blocks": [
+    { "type": "text", "properties": { "content": "&lt;p&gt;We're a small studio…&lt;/p&gt;" } }
+  ]
+}</pre>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="shell pad">
+          <h2>{copy.setupTitle}</h2>
+          <p class="sub">{copy.setupSub}</p>
+          <div class="setup-grid">
+            <div class="code-card">
+              <div class="code-head mono">astro.config.mjs</div>
+              <pre class="mono diff" is:raw><span class="d-ctx">import { defineConfig } from "astro/config";</span>
+<span class="d-add">+ import stelstone from "stelstone";</span>
+<span class="d-add">+ import config from "./cms.config.mjs";</span>
+
+<span class="d-ctx">export default defineConfig({</span>
+<span class="d-add">+   integrations: [stelstone({ config })],</span>
+<span class="d-ctx">});</span></pre>
+            </div>
+            <div class="setup-col">
+              <div class="code-card">
+                <div class="code-head mono">npm run dev</div>
+                <pre class="mono">Stelstone mounted at /admin (admin UI: built bundle)</pre>
+              </div>
+              <div class="loop-card">
+                <p class="body">{copy.loopBody}</p>
+                <a class="btn amber" href="https://deploy.workers.cloudflare.com/?url=https://github.com/natilon/stelstone-starter"
+                  >{copy.ctaDeploy}</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="shell pad">
+          <h2 class="mb-lg">{copy.prodTitle}</h2>
+          <div class="cell-grid four">
+            <div class="cell">
+              <div class="kicker mono">{lang === "tr" ? "Canlı site" : "Live site"}</div>
+              <a class="big-link" href="https://dymdanismanlik.com">dymdanismanlik.com ↗</a>
+              <p class="cell-note">
+                {lang === "tr"
+                  ? "WordPress'ten kelime kelime doğrulanmış migrasyonla taşındı."
+                  : "Migrated from WordPress with word-by-word verification."}
+              </p>
+            </div>
+            <div class="cell">
+              <div class="kicker mono">{lang === "tr" ? "Lisans" : "Licence"}</div>
+              <div class="big-link plain">MIT</div>
+              <p class="cell-note">
+                {lang === "tr" ? "Ticari kullanım serbest. Kilitlenme yok." : "Commercial use is free. No lock-in."}
+              </p>
+            </div>
+            <div class="cell">
+              <div class="kicker mono">{lang === "tr" ? "Bakım" : "Maintenance"}</div>
+              <a class="big-link" href="https://github.com/natilon/stelstone/blob/main/CHANGELOG.md">CHANGELOG ↗</a>
+              <p class="cell-note">
+                {lang === "tr" ? "Yayınlanan sürümler, yazılı." : "Released versions, written down."}
+              </p>
+            </div>
+            <div class="cell">
+              <div class="kicker mono">{lang === "tr" ? "Çerçeve" : "Framework"}</div>
+              <a class="big-link" href="https://github.com/natilon/stelstone#quick-start">
+                {lang === "tr" ? "Astro entegrasyonu ↗" : "Astro integration ↗"}
+              </a>
+              <p class="cell-note">
+                {lang === "tr"
+                  ? "Bugün yalnız Astro — tek çerçeve, düzgün yapılmış."
+                  : "Astro today — one framework, done properly."}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="shell pad migrate">
+          <div>
+            <h2 class="h2-sm">{copy.migrateTitle}</h2>
+            <p class="lede-sm last">{copy.migrateBody}</p>
+          </div>
+          <div class="cta-row">
+            <a class="btn amber big" href="mailto:hello@stelstone.com?subject=Migrate%20from%20WordPress">{copy.migrateCta}</a>
+            <a class="btn ghost big" href="https://github.com/natilon/stelstone">{copy.migrateCta2}</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="shell pad">
+          <h2 class="mb-lg">{copy.waysTitle}</h2>
+          <div class="ways">
+            {ways[0] && (
+              <div class="way">
+                <h3>{ways[0].title}</h3>
+                <p class="body grow">{ways[0].body}</p>
+                <a class="way-link" href="https://github.com/natilon/stelstone">{ways[0].linkLabel}</a>
+              </div>
+            )}
+            {ways[1] && (
+              <div class="way">
+                <h3>{ways[1].title}</h3>
+                <p class="body grow">{ways[1].body}</p>
+                <a class="way-link" href="mailto:hello@stelstone.com?subject=Migrate%20from%20WordPress">{ways[1].linkLabel}</a>
+              </div>
+            )}
+            {ways[2] && (
+              <div class="way dashed">
+                <div class="way-head">
+                  <h3 class="muted">{ways[2].title}</h3>
+                  <span class="soon mono">{ways[2].linkLabel}</span>
+                </div>
+                <p class="body grow muted-body">{ways[2].body}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="shell foot">
+          <div>
+            <div class="wordmark foot-mark">stelstone</div>
+            <p class="foot-story">{copy.footerStory}</p>
+          </div>
+          <div class="foot-links">
+            <a href="/notes/">Notes</a>
+            <a href="https://github.com/natilon/stelstone">GitHub</a>
+            <a href="https://www.npmjs.com/package/stelstone">npm</a>
+            <a href="https://github.com/natilon/stelstone/blob/main/CHANGELOG.md">CHANGELOG</a>
+          </div>
+          <div class="foot-meta">
+            <div>Stelstone — by <a href="https://natilon.com">Natilon</a></div>
+            <div class="mono faint">stele + stone · committed to last</div>
+            <div class="mono faint">MIT · stelstone.com</div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script is:inline>
+      const copyBtn = document.getElementById("copy-install");
+      let copyTimer;
+      copyBtn.addEventListener("click", () => {
+        try { navigator.clipboard.writeText(document.getElementById("install-cmd").textContent); } catch {}
+        copyBtn.textContent = copyBtn.dataset.done;
+        clearTimeout(copyTimer);
+        copyTimer = setTimeout(() => { copyBtn.textContent = copyBtn.dataset.idle; }, 1600);
+      });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: #1c1a18;
+    color: #e9e5dd;
+    font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: #e5ab52; text-decoration: none; }
+  a:hover { color: #f3c883; }
+  p { text-wrap: pretty; }
+  .mono { font-family: "IBM Plex Mono", monospace; }
+
+  .clip { max-width: 100%; overflow-x: hidden; }
+  .shell { max-width: 1120px; margin: 0 auto; padding-left: 28px; padding-right: 28px; }
+  .pad { padding-top: 88px; padding-bottom: 88px; }
+  .band { border-top: 1px solid #2a2724; background: #191716; }
+  section:not(.band) { border-top: 1px solid #2a2724; }
+  section#top { border-top: 0; }
+
+  .top {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(28, 26, 24, 0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #322e2a;
+  }
+  .bar { display: flex; align-items: center; gap: 24px; padding-top: 14px; padding-bottom: 14px; }
+  .wordmark { font-family: "IBM Plex Mono", monospace; font-size: 15px; font-weight: 600; letter-spacing: 0.02em; color: #e9e5dd; }
+  .badges { display: flex; align-items: center; gap: 10px; margin-left: 8px; }
+  .badges img { display: block; opacity: 0.9; }
+  .grow { flex: 1; }
+  .nav-link { font-size: 14px; color: #9d968c; }
+  .nav-link:hover { color: #e9e5dd; }
+  .lang-btn {
+    border: 1px solid #3a3530; color: #9d968c; font-size: 12px;
+    padding: 6px 10px; border-radius: 4px;
+  }
+  .lang-btn:hover { border-color: #5a534b; color: #e9e5dd; }
+  @media (max-width: 680px) {
+    .badges, .bar .nav-link { display: none; }
+    .bar { gap: 14px; }
+  }
+
+  .btn { font-size: 14px; font-weight: 600; padding: 9px 16px; border-radius: 5px; display: inline-block; }
+  .btn.big { font-size: 15px; padding: 13px 22px; border-radius: 6px; }
+  .btn.amber { background: #e5ab52; color: #1c1a18; }
+  .btn.amber:hover { background: #f3c883; color: #1c1a18; }
+  .btn.ghost { border: 1px solid #3a3530; color: #e9e5dd; font-weight: 500; }
+  .btn.ghost:hover { border-color: #5a534b; color: #e9e5dd; }
+
+  .hero { padding-top: 104px; padding-bottom: 88px; }
+  .status { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: #8d8579; letter-spacing: 0.04em; margin-bottom: 28px; }
+  .dot { width: 7px; height: 7px; background: #5cc79b; border-radius: 50%; display: inline-block; }
+  h1 { font-size: clamp(42px, 6.4vw, 78px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 600; margin: 0 0 26px; max-width: 16em; }
+  .lede { font-size: 19px; line-height: 1.6; color: #a8a199; margin: 0 0 36px; max-width: 34em; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px; }
+  .install {
+    display: flex; align-items: center; gap: 14px;
+    background: #242120; border: 1px solid #322e2a; border-radius: 8px;
+    padding: 14px 16px; max-width: 520px;
+  }
+  .prompt { color: #6f675d; font-size: 14px; }
+  .install code { flex: 1; font-size: 14.5px; color: #e9e5dd; }
+  .copy-btn {
+    background: #312d29; border: 1px solid #423c36; color: #b8b1a8;
+    font-size: 12px; padding: 6px 11px; border-radius: 4px; cursor: pointer;
+  }
+  .copy-btn:hover { background: #3d3830; color: #e9e5dd; }
+
+  h2 { font-size: clamp(30px, 3.6vw, 44px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 600; margin: 0 0 12px; }
+  h2.h2-sm { font-size: clamp(26px, 3vw, 36px); line-height: 1.15; margin: 0 0 18px; }
+  h2.mb-lg { margin-bottom: 44px; }
+  .sub { font-size: 16px; color: #8d8579; margin: 0 0 48px; max-width: 32em; }
+
+  .cell-grid {
+    display: grid; gap: 1px; background: #2a2724;
+    border: 1px solid #2a2724; border-radius: 10px; overflow: hidden;
+  }
+  .calls { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .four { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .cell { background: #1c1a18; padding: 32px 28px; }
+  .four .cell { padding: 28px; }
+  .quote { font-size: 16px; color: #6f675d; text-decoration: line-through; text-decoration-color: #e5ab52; margin: 0 0 20px; }
+  .body { font-size: 15.5px; line-height: 1.65; color: #c4bdb3; margin: 0; }
+  .kicker { font-size: 12px; color: #8d8579; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; }
+  .big-link { font-size: 17px; font-weight: 500; }
+  .big-link.plain { color: #e9e5dd; }
+  .cell-note { font-size: 14.5px; line-height: 1.6; color: #a8a199; margin: 12px 0 0; }
+
+  .rails { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px 40px; }
+  .rail-item { border-top: 1px solid #322e2a; padding-top: 20px; }
+  .rail-item h3 { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #e5ab52; margin: 0 0 10px; }
+  .rail-item .body { line-height: 1.6; }
+
+  .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 56px; align-items: start; }
+  .lede-sm { font-size: 16.5px; line-height: 1.65; color: #a8a199; margin: 0 0 20px; }
+  .lede-sm.last { margin-bottom: 0; }
+  .proof-row { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-top: 28px; }
+  .proof-row img { opacity: 0.9; }
+  .stat .num { font-size: 26px; color: #e9e5dd; font-weight: 500; }
+  .stat .label { font-size: 12.5px; color: #8d8579; letter-spacing: 0.04em; }
+
+  .code-card { background: #141312; border: 1px solid #2a2724; border-radius: 10px; overflow: hidden; }
+  .code-head { display: flex; align-items: center; gap: 8px; padding: 11px 16px; border-bottom: 1px solid #2a2724; font-size: 12px; color: #6f675d; }
+  .code-card pre { margin: 0; padding: 20px 18px; font-size: 13px; line-height: 1.75; color: #c4bdb3; overflow-x: auto; }
+  pre.diff { line-height: 1.8; }
+  .d-ctx { color: #8d8579; display: block; }
+  .d-add { color: #5cc79b; display: block; }
+
+  .setup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+  .setup-col { display: flex; flex-direction: column; gap: 24px; }
+  .loop-card { border: 1px solid #322e2a; border-radius: 10px; padding: 24px; }
+  .loop-card .body { margin-bottom: 18px; }
+
+  .migrate {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 48px; align-items: center;
+  }
+  .migrate .cta-row { margin-bottom: 0; }
+
+  .ways { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .way { border: 1px solid #322e2a; border-radius: 10px; padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+  .way.dashed { border-style: dashed; }
+  .way h3 { font-size: 20px; font-weight: 600; margin: 0; }
+  .way h3.muted { color: #a8a199; }
+  .way .grow { flex: 1; color: #a8a199; }
+  .way .muted-body { color: #8d8579; }
+  .way-link { font-size: 15px; font-weight: 500; }
+  .way-head { display: flex; align-items: center; gap: 10px; }
+  .soon {
+    font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: #8d8579; border: 1px solid #3a3530; border-radius: 3px; padding: 3px 7px;
+  }
+
+  footer { border-top: 1px solid #2a2724; }
+  .foot {
+    padding-top: 64px; padding-bottom: 72px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;
+  }
+  .foot-mark { margin-bottom: 14px; }
+  .foot-story { font-size: 14.5px; line-height: 1.7; color: #8d8579; margin: 0; max-width: 30em; }
+  .foot-links { display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; }
+  .foot-links a { color: #9d968c; }
+  .foot-links a:hover { color: #e9e5dd; }
+  .foot-meta { display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: #8d8579; }
+  .foot-meta a { color: #9d968c; }
+  .foot-meta a:hover { color: #e9e5dd; }
+  .faint { font-size: 13px; color: #6f675d; }
+</style>

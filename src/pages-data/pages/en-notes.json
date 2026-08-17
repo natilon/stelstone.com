@@ -1,0 +1,61 @@
+{
+  "id": "en/notes",
+  "slug": "notes",
+  "lang": "en",
+  "collection": "pages",
+  "meta": {
+    "title": "Notes",
+    "description": "Short engineering notes from building Stelstone — releases, decisions, lessons."
+  },
+  "blocks": [
+    {
+      "id": "n1",
+      "type": "text",
+      "properties": {
+        "content": "<p>Short engineering notes from building Stelstone: releases, decisions, and the occasional lesson learned the hard way. Newest first.</p>",
+        "spacing": "medium"
+      }
+    },
+    {
+      "id": "n2",
+      "type": "heading",
+      "properties": { "text": "Stelstone is live", "level": 2 }
+    },
+    {
+      "id": "n3",
+      "type": "text",
+      "properties": {
+        "content": "<p><em>August 17, 2026</em></p><p>This site is now served by Stelstone itself: one Cloudflare Worker runs the landing you came from, the admin panel, and the API. This very page is a JSON record in the site's repository, written through <code>/admin</code>, published as a git commit — the loop we ask you to trust is the loop we run on.</p>"
+      }
+    },
+    {
+      "id": "n4",
+      "type": "text",
+      "properties": {
+        "content": "<p>What shipped to get here:</p>"
+      }
+    },
+    {
+      "id": "n5",
+      "type": "list",
+      "properties": {
+        "ordered": false,
+        "items": [
+          "The stelstone package family on npm — install with `npm install stelstone`",
+          "A one-click starter: the Deploy to Cloudflare button on stelstone-starter",
+          "Draft branches on the GitHub backend, so saving never publishes",
+          "Per-page publishing, build-time link verification, automatic 301s",
+          "A forms endpoint, so a contact form needs no third-party service"
+        ]
+      }
+    },
+    {
+      "id": "n6",
+      "type": "text",
+      "properties": {
+        "content": "<p>Everything is MIT and on <a href=\"https://github.com/natilon/stelstone\">GitHub</a>. If you hand websites to clients and like your phone quiet, try it on your next handoff.</p>",
+        "spacingTop": "small"
+      }
+    }
+  ]
+}

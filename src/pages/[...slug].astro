@@ -1,0 +1,37 @@
+---
+import { getCollection } from "astro:content";
+import BlockRenderer from "@stelstone/astro-blocks";
+import Base from "../layouts/Base.astro";
+
+export async function getStaticPaths() {
+  const all = await getCollection("pages");
+  const bySlug = new Map(all.map((e) => [e.data.slug, e]));
+
+  // Ancestor-chain URLs, same convention as every Stelstone site. The site
+  // root belongs to the landing (index.astro), so there is no HOME mapping
+  // here — every CMS page lives at its own chain path.
+  const pathOf = (entry) => {
+    const parts = [entry.data.slug];
+    const seen = new Set(parts);
+    let cur = entry;
+    while (cur.data.parent && !seen.has(cur.data.parent)) {
+      const parent = bySlug.get(cur.data.parent);
+      if (!parent) break;
+      parts.unshift(parent.data.slug);
+      seen.add(parent.data.slug);
+      cur = parent;
+    }
+    return parts.join("/");
+  };
+
+  return all
+    .filter((entry) => !entry.data.draft)
+    .map((entry) => ({ params: { slug: pathOf(entry) }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+---
+
+<Base title={entry.data.title} description={entry.data.description}>
+  <BlockRenderer blocks={entry.data.blocks} />
+</Base>
