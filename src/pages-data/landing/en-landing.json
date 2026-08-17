@@ -1,0 +1,51 @@
+{
+  "id": "en/landing",
+  "slug": "landing",
+  "lang": "en",
+  "collection": "landing",
+  "meta": {
+    "title": "Landing (EN)",
+    "status": "Astro integration · MIT · git-based CMS",
+    "heroTitle": "The CMS your editors can't break.",
+    "heroLede": "Every record is a file in your repo, every publish is a git commit, the output is static — and the support phone stays quiet.",
+    "ctaDeploy": "Deploy to Cloudflare",
+    "ctaSource": "Read the source",
+    "callsTitle": "Three calls that never come",
+    "callsSub": "The support calls that arrive after handoff, and the mechanism that makes each one impossible.",
+    "calls": [
+      { "quote": "“The site is broken.”", "body": "It can't be. Editors write JSON records through /admin; the site itself is static HTML built from them. There is no template to edit and no database to corrupt." },
+      { "quote": "“This link is 404.”", "body": "It can't be. Internal links are picked from a list of real pages and verified at build time. A broken link fails the build instead of reaching production." },
+      { "quote": "“Can we get yesterday's text back?”", "body": "You can. Every publish is a commit, so yesterday's text is a revision in git — restoring it is a menu item, not an archaeology project." }
+    ],
+    "railsTitle": "Deploy on a Friday.",
+    "railsSub": "Six guardrails, each a mechanism rather than a policy.",
+    "rails": [
+      { "title": "Draft branch", "body": "Save is not publish. Drafts commit to a separate branch and never touch the live build." },
+      { "title": "Page-by-page publish", "body": "Publishing is per page. One editor finishing the about page can't push another's half-written pricing copy." },
+      { "title": "Link verification at build", "body": "Internal links are chosen from a list and checked when the site builds. A broken one stops the build." },
+      { "title": "Automatic 301", "body": "A moved page keeps its old address: the redirect is written for you when the slug changes." },
+      { "title": "Conflict protection", "body": "Two editors can't overwrite each other — a stale edit is rejected instead of silently winning." },
+      { "title": "Scheduled publish", "body": "Set a date and the commit lands then. Nobody stays up to press a button." }
+    ],
+    "commitTitle": "Every publish is a commit.",
+    "commitBody1": "A record is a JSON file in your own repository. The admin writes it, git stores it, Astro builds it into static HTML. Undo is a menu item because history is git history.",
+    "commitBody2": "Git-based like Decap and Keystatic — the difference: Stelstone knows your site's routes.",
+    "testsLabel": "automated tests",
+    "setupTitle": "From empty account to live in about ten minutes",
+    "setupSub": "One Cloudflare Worker runs site, admin and API together. No KV, no extra config.",
+    "loopBody": "Install, open /admin, watch the commit land. That's the whole loop.",
+    "prodTitle": "Running in production",
+    "migrateTitle": "Client still on WordPress? We'll move them.",
+    "migrateBody": "The deliverable is a word-by-word mechanical verification report: every page, every paragraph, checked against the original.",
+    "migrateCta": "Migrate from WordPress",
+    "migrateCta2": "See a report",
+    "waysTitle": "Three ways in",
+    "ways": [
+      { "title": "Open source", "body": "MIT, install it today, host it yourself.", "linkLabel": "Get started →" },
+      { "title": "Migration service", "body": "We move the client's WordPress site and hand you the verification report.", "linkLabel": "Request a migration →" },
+      { "title": "Stelstone Cloud", "body": "Hosted, priced per site, unlimited editors.", "linkLabel": "coming soon" }
+    ],
+    "footerStory": "From the Greek stēlē — the standing stone an inscription is carved into, and stone. Inscribed to last."
+  },
+  "blocks": []
+}

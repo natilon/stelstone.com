@@ -1,0 +1,51 @@
+{
+  "id": "tr/landing",
+  "slug": "landing",
+  "lang": "tr",
+  "collection": "landing",
+  "meta": {
+    "title": "Landing (TR)",
+    "status": "Astro entegrasyonu · MIT · git tabanlı CMS",
+    "heroTitle": "Editörün siteyi bozamadığı CMS.",
+    "heroLede": "Her kayıt repo'nuzda bir dosya, her yayın bir git commit'i, çıktı statik — ve destek telefonu susuyor.",
+    "ctaDeploy": "Cloudflare'e kur",
+    "ctaSource": "Kaynağı oku",
+    "callsTitle": "Hiç gelmeyecek üç telefon",
+    "callsSub": "Teslimden sonra gelen destek telefonları ve her birini imkânsız kılan mekanizma.",
+    "calls": [
+      { "quote": "“Site bozulmuş.”", "body": "Olamaz. Editör /admin üzerinden JSON kayıtları yazar; sitenin kendisi bunlardan derlenen statik HTML'dir. Düzenlenecek şablon, bozulacak veritabanı yok." },
+      { "quote": "“Bu link 404 veriyor.”", "body": "Olamaz. İç linkler gerçek sayfa listesinden seçilir ve build'de doğrulanır. Kırık link yayına çıkmaz, build'i durdurur." },
+      { "quote": "“Dünkü metni geri alabilir miyiz?”", "body": "Alabilirsin. Her yayın bir commit, yani dünkü metin git'te bir sürüm — geri almak bir menü maddesi." }
+    ],
+    "railsTitle": "Cuma günü deploy et.",
+    "railsSub": "Altı koruma — her biri kural değil, mekanizma.",
+    "rails": [
+      { "title": "Taslak dalı", "body": "Kaydet ≠ yayınla. Taslaklar ayrı dala commit edilir, canlı build'e dokunmaz." },
+      { "title": "Sayfa bazlı yayın", "body": "Yayın sayfa sayfadır. Hakkımızda'yı bitiren editör, başkasının yarım fiyat metnini yayına taşımaz." },
+      { "title": "Build'de link doğrulama", "body": "İç linkler listeden seçilir ve build sırasında kontrol edilir. Kırık olan build'i durdurur." },
+      { "title": "Otomatik 301", "body": "Taşınan sayfa eski adresini korur: slug değiştiğinde yönlendirme kendiliğinden yazılır." },
+      { "title": "Çakışma koruması", "body": "İki editör birbirini ezemez — eskimiş bir düzenleme sessizce kazanmaz, reddedilir." },
+      { "title": "Zamanlanmış yayın", "body": "Tarihi ver, commit o an düşer. Butona basmak için kimse ayakta kalmaz." }
+    ],
+    "commitTitle": "Her yayın bir commit.",
+    "commitBody1": "Kayıt, kendi repo'nuzdaki bir JSON dosyasıdır. Admin yazar, git saklar, Astro statik HTML'e derler. Geri almak bir menü maddesidir, çünkü geçmiş git geçmişidir.",
+    "commitBody2": "Decap ve Keystatic gibi git tabanlı — fark: Stelstone sitenin route'larını bilir.",
+    "testsLabel": "otomatik test",
+    "setupTitle": "Boş hesaptan canlıya yaklaşık on dakika",
+    "setupSub": "Tek Cloudflare Worker'da site, admin ve API birlikte çalışır. KV yok, ek yapılandırma yok.",
+    "loopBody": "Kur, /admin'i aç, commit'in düştüğünü gör. Döngünün tamamı bu.",
+    "prodTitle": "Üretimde çalışıyor",
+    "migrateTitle": "Müşterin WordPress'te mi? Biz taşıyalım.",
+    "migrateBody": "Teslimatın belgesi kelime kelime mekanik doğrulama raporudur: her sayfa, her paragraf, aslıyla karşılaştırılır.",
+    "migrateCta": "WordPress'ten taşı",
+    "migrateCta2": "Örnek raporu gör",
+    "waysTitle": "Üç yol",
+    "ways": [
+      { "title": "Açık kaynak", "body": "MIT, bugün kur, kendin barındır.", "linkLabel": "Başla →" },
+      { "title": "Taşıma servisi", "body": "Müşterinin WordPress sitesini biz taşırız, doğrulama raporunu size veririz.", "linkLabel": "Taşıma talebi →" },
+      { "title": "Stelstone Cloud", "body": "Barındırmalı, site başı fiyat, sınırsız editör.", "linkLabel": "yakında" }
+    ],
+    "footerStory": "Yunanca stēlē'den — üzerine yazıt kazınan dikili taş — ve stone. Yazıt kadar kalıcı içerik."
+  },
+  "blocks": []
+}
