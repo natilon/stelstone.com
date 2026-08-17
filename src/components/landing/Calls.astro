@@ -1,0 +1,21 @@
+---
+import { asList } from "../../lib/aslist";
+interface Props { properties: Record<string, any> }
+const { properties: p = {} } = Astro.props;
+const calls = asList(p.calls);
+---
+
+<section class="band">
+  <div class="shell pad">
+    <h2>{p.title}</h2>
+    <p class="sub">{p.sub}</p>
+    <div class="cell-grid calls">
+      {calls.map((c) => (
+        <div class="cell">
+          <p class="quote mono">{c.quote}</p>
+          <p class="body">{c.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

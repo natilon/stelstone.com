@@ -1,0 +1,36 @@
+---
+interface Props { properties: Record<string, any> }
+const { properties: p = {} } = Astro.props;
+---
+
+<section class="band">
+  <div class="shell pad split">
+    <div>
+      <h2>{p.title}</h2>
+      <p class="lede-sm">{p.body1}</p>
+      <p class="lede-sm">{p.body2}</p>
+      <div class="proof-row">
+        <div class="stat mono">
+          <div class="num">340+</div>
+          <div class="label">{p.testsLabel}</div>
+        </div>
+        <img
+          src="https://img.shields.io/github/actions/workflow/status/natilon/stelstone/ci.yml?style=flat-square&label=CI&color=2a2724&labelColor=2a2724"
+          alt="CI status"
+          height="20"
+        />
+        <a class="nav-link" href="https://github.com/natilon/stelstone">GitHub →</a>
+      </div>
+    </div>
+    <div class="code-card">
+      <div class="code-head mono">src/pages-data/pages/en-about.json</div>
+      <pre class="mono" is:raw>{
+  "slug": "about",
+  "meta": { "title": "About us", "draft": false },
+  "blocks": [
+    { "type": "text", "properties": { "content": "&lt;p&gt;We're a small studio…&lt;/p&gt;" } }
+  ]
+}</pre>
+    </div>
+  </div>
+</section>

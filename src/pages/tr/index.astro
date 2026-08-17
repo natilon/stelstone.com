@@ -8,12 +8,13 @@ import { getCollection } from "astro:content";
 import Landing from "../../components/Landing.astro";
 
 const records = await getCollection("landing");
-const copy = records.find((r) => r.data.lang === "tr")?.data;
-if (!copy) throw new Error("landing collection has no tr record (tr-landing.json)");
+const rec = records.find((r) => r.data.lang === "tr")?.data;
+if (!rec) throw new Error("landing collection has no tr record (tr-landing.json)");
 ---
 
 <Landing
-  copy={copy}
+  blocks={rec.blocks}
+  footerStory={rec.footerStory}
   lang="tr"
   title="Stelstone — editörün siteyi bozamadığı CMS"
   description="Her kayıt repo'nuzda bir dosya, her yayın bir commit, çıktı statik."

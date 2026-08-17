@@ -8,12 +8,13 @@ import { getCollection } from "astro:content";
 import Landing from "../components/Landing.astro";
 
 const records = await getCollection("landing");
-const copy = records.find((r) => r.data.lang === "en")?.data;
-if (!copy) throw new Error("landing collection has no en record (en-landing.json)");
+const rec = records.find((r) => r.data.lang === "en")?.data;
+if (!rec) throw new Error("landing collection has no en record (en-landing.json)");
 ---
 
 <Landing
-  copy={copy}
+  blocks={rec.blocks}
+  footerStory={rec.footerStory}
   lang="en"
   title="Stelstone — the git-based CMS your editors can't break"
   description="Every record is a file in your repo, every publish is a commit, the output is static."

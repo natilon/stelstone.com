@@ -1,0 +1,23 @@
+---
+import { asList } from "../../lib/aslist";
+interface Props { properties: Record<string, any> }
+const { properties: p = {} } = Astro.props;
+const cards = asList(p.cards);
+---
+
+<section class="band">
+  <div class="shell pad">
+    <h2 class="mb-lg">{p.title}</h2>
+    <div class="cell-grid four">
+      {cards.map((c) => (
+        <div class="cell">
+          <div class="kicker mono">{c.kicker}</div>
+          {c.url
+            ? <a class="big-link" href={c.url}>{c.label}</a>
+            : <div class="big-link plain">{c.label}</div>}
+          <p class="cell-note">{c.note}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
