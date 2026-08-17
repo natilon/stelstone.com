@@ -1,0 +1,119 @@
+---
+/**
+ * Chrome for CMS-managed pages (the `pages` collection). Same design
+ * language as the landing — IBM Plex, the dark stone palette, the amber
+ * accent — so a page written in /admin lands looking native.
+ */
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = "" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — Stelstone</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="top">
+      <div class="shell bar">
+        <a href="/" class="wordmark">stelstone</a>
+        <div class="grow"></div>
+        <a class="nav-link" href="https://github.com/natilon/stelstone">GitHub</a>
+        <a class="btn amber" href="https://deploy.workers.cloudflare.com/?url=https://github.com/natilon/stelstone-starter"
+          >Deploy to Cloudflare</a
+        >
+      </div>
+    </header>
+
+    <main class="shell prose">
+      <h1>{title}</h1>
+      <slot />
+    </main>
+
+    <footer class="foot">
+      <div class="shell foot-row">
+        <span>Stelstone — by <a href="https://natilon.com">Natilon</a></span>
+        <span class="mono faint">stele + stone · committed to last</span>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #1c1a18; color: #e9e5dd;
+    font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; line-height: 1.65;
+  }
+  a { color: #e5ab52; text-decoration: none; }
+  a:hover { color: #f3c883; }
+  .mono { font-family: "IBM Plex Mono", monospace; }
+  .shell { max-width: 760px; margin: 0 auto; padding-left: 28px; padding-right: 28px; }
+
+  .top {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(28, 26, 24, 0.88); backdrop-filter: blur(10px);
+    border-bottom: 1px solid #322e2a;
+  }
+  .bar { display: flex; align-items: center; gap: 20px; padding-top: 14px; padding-bottom: 14px; }
+  .wordmark { font-family: "IBM Plex Mono", monospace; font-size: 15px; font-weight: 600; letter-spacing: 0.02em; color: #e9e5dd; }
+  .grow { flex: 1; }
+  .nav-link { font-size: 14px; color: #9d968c; }
+  .nav-link:hover { color: #e9e5dd; }
+  .btn.amber { background: #e5ab52; color: #1c1a18; font-size: 14px; font-weight: 600; padding: 9px 16px; border-radius: 5px; }
+  .btn.amber:hover { background: #f3c883; color: #1c1a18; }
+  @media (max-width: 560px) { .bar .btn { display: none; } }
+
+  /* CMS bloklarının düzyazı görünümü */
+  main.prose { padding-top: 64px; padding-bottom: 96px; }
+  .prose h1 { font-size: clamp(32px, 4.5vw, 44px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 600; margin: 0 0 28px; }
+  .prose h2 { font-size: 26px; letter-spacing: -0.015em; font-weight: 600; margin: 44px 0 14px; }
+  .prose h3 { font-size: 19px; font-weight: 600; margin: 32px 0 10px; }
+  .prose p, .prose li { font-size: 16.5px; color: #c4bdb3; }
+  .prose ul, .prose ol { padding-left: 1.3em; }
+  .prose li { margin-bottom: 6px; }
+  .prose blockquote {
+    margin: 24px 0; padding: 4px 20px; border-left: 3px solid #e5ab52; color: #a8a199;
+  }
+  .prose img { max-width: 100%; border-radius: 10px; }
+  .prose pre, .prose code {
+    font-family: "IBM Plex Mono", monospace; font-size: 14px;
+    background: #141312; border: 1px solid #2a2724; border-radius: 8px;
+  }
+  .prose code { padding: 2px 6px; }
+  .prose pre { padding: 18px; overflow-x: auto; }
+  .prose pre code { background: none; border: 0; padding: 0; }
+  .prose hr { border: 0; border-top: 1px solid #2a2724; margin: 40px 0; }
+
+  /* CMS boşluk kademeleri — tasarım "adım"ın kaç piksel olduğuna karar verir */
+  .block-spacing[data-spacing="small"] { margin-bottom: 16px; }
+  .block-spacing[data-spacing="medium"] { margin-bottom: 40px; }
+  .block-spacing[data-spacing="large"] { margin-bottom: 80px; }
+  .block-spacing[data-spacing="none"] { margin-bottom: 0; }
+  .block-spacing[data-spacing-top="small"] { margin-top: 16px; }
+  .block-spacing[data-spacing-top="medium"] { margin-top: 40px; }
+  .block-spacing[data-spacing-top="large"] { margin-top: 80px; }
+
+  .foot { border-top: 1px solid #2a2724; }
+  .foot-row {
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    padding-top: 22px; padding-bottom: 30px; font-size: 14px; color: #8d8579;
+  }
+  .foot a { color: #9d968c; }
+  .foot a:hover { color: #e9e5dd; }
+  .faint { font-size: 13px; color: #6f675d; }
+</style>
