@@ -12,9 +12,9 @@
       "id": "b-hero",
       "type": "landing-hero",
       "properties": {
-        "status": "Astro entegrasyonu · MIT · git tabanlı CMS",
+        "status": "Astro entegrasyonlu Git tabanlı CMS",
         "title": "Editörün siteyi bozamadığı CMS.",
-        "lede": "Her kayıt repo'nuzda bir dosya, her yayın bir git commit'i, çıktı statik — ve destek telefonu susuyor.",
+        "lede": "Her kayıt aslında bir dosya, her yayın bir git commit'i, çıktı statik HTML — müşteri şikayetlerini en aza indirecek formül.",
         "ctaDeploy": "Cloudflare'e kur",
         "ctaSource": "Kaynağı oku"
       }
@@ -90,7 +90,7 @@
       "type": "landing-setup",
       "properties": {
         "title": "Boş hesaptan canlıya yaklaşık on dakika",
-        "sub": "Tek Cloudflare Worker'da site, admin ve API birlikte çalışır. KV yok, ek yapılandırma yok.",
+        "sub": "Cloudflare Worker'da siteniz, admin paneli ve API birlikte çalışır. Ekstra kuruluma gerek yok.",
         "loopBody": "Kur, /admin'i aç, commit'in düştüğünü gör. Döngünün tamamı bu."
       }
     },
@@ -132,7 +132,7 @@
       "type": "landing-migrate",
       "properties": {
         "title": "Müşterin WordPress'te mi? Biz taşıyalım.",
-        "body": "Teslimatın belgesi kelime kelime mekanik doğrulama raporudur: her sayfa, her paragraf, aslıyla karşılaştırılır.",
+        "body": "Kelime kelime mekanik doğrulama raporu. Her sayfa, her paragraf, aslıyla karşılaştırılır ve teslimat gerçekleştirilir.",
         "cta": "WordPress'ten taşı",
         "cta2": "Örnek raporu gör"
       }
